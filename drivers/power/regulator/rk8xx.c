@@ -16,6 +16,7 @@
 #include <power/rk8xx_pmic.h>
 #include <power/pmic.h>
 #include <power/regulator.h>
+#include <linux/delay.h>
 
 #ifndef CONFIG_SPL_BUILD
 #define ENABLE_DRIVER

@@ -6,6 +6,8 @@
  * Peter, Software Engineering, <superpeter.cai@gmail.com>.
  */
 
+#define LOG_DEBUG
+
 #include <common.h>
 #include <dm.h>
 #include <syscon.h>
@@ -60,6 +62,8 @@ static int rockchip_gpio_set_value(struct udevice *dev, unsigned offset,
 	struct rockchip_gpio_priv *priv = dev_get_priv(dev);
 	u32 mask = BIT(offset), data = value ? mask : 0;
 
+	debug("%s(bank=%s, offset=%u, value=%d)\n", __func__, priv->name, offset, value);
+
 	if (priv->version && offset >= 16)
 		rk_clrsetreg(priv->regs + SWPORT_DR_H, mask >> 16, data >> 16);
 	else if (priv->version)
@@ -74,6 +78,8 @@ static int rockchip_gpio_direction_input(struct udevice *dev, unsigned offset)
 {
 	struct rockchip_gpio_priv *priv = dev_get_priv(dev);
 	u32 mask = BIT(offset);
+
+	debug("%s(bank=%s, offset=%u)\n", __func__, priv->name, offset);
 
 	if (priv->version && offset >= 16)
 		rk_clrreg(priv->regs + SWPORT_DDR_H, mask >> 16);
@@ -90,6 +96,8 @@ static int rockchip_gpio_direction_output(struct udevice *dev, unsigned offset,
 {
 	struct rockchip_gpio_priv *priv = dev_get_priv(dev);
 	u32 mask = BIT(offset);
+
+	debug("%s(bank=%s, offset=%u, value=%d)\n", __func__, priv->name, offset, value);
 
 	rockchip_gpio_set_value(dev, offset, value);
 
